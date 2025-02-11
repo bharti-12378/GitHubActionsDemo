@@ -1,16 +1,18 @@
-terraform {
-  backend "remote" {
-    organization = "Vishal-POCterraform"
+provider "aws" {
+  region = "us-east-1"
+  credentials = var.aws_credentials
+}
 
-    workspaces {
-      name = "DemoTerraform"
+resource "aws_s3_bucket" "example_bucket" {
+  bucket = "example-bucket-name"
+  acl    = "private"
+}
+
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "5.31.0"
     }
   }
 }
-
-resource "null_resource" "example" {
-  triggers = {
-    value = "An example resource that does nothing!"
-  }
-}
-
