@@ -19,7 +19,7 @@ resource "google_storage_bucket" "example_bucket" {
       type = "Delete"
     }
     condition {
-      age = 365  # Deletes objects older than 1 year
+      age = 365 # Deletes objects older than 1 year
     }
   }
 }
