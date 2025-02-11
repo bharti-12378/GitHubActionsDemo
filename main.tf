@@ -1,6 +1,6 @@
 provider "aws" {
   region      = "us-east-1"
-  credentials = var.aws_credentials
+  
 }
 
 resource "aws_s3_bucket" "example_bucket" {
