@@ -1,18 +1,29 @@
-provider "aws" {
-  region = "eu-west-1"
+provider "google" {
+  project = "qwiklabs-gcp-03-e6274714b80d"
+  region  = "us-central1"
 }
 
-resource "aws_s3_bucket" "example_bucket" {
-  bucket = "example-bucket-name"
-  acl    = "private"
-}
+resource "google_storage_bucket" "example_bucket" {
+  name          = "example-qwiklabs-gcp-03-e6274714b80d-gcs-bucket"
+  location      = "US"
+  storage_class = "STANDARD"
 
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "5.31.0"
+  uniform_bucket_level_access = true
+
+  versioning {
+    enabled = true
+  }
+
+  lifecycle_rule {
+    action {
+      type = "Delete"
+    }
+    condition {
+      age = 365  # Deletes objects older than 1 year
     }
   }
 }
 
+output "bucket_name" {
+  value = google_storage_bucket.example_bucket.name
+}
