@@ -52,13 +52,19 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - name: Download Workspace
-        uses: actions/download-artifact@v4
-        with:
-          name: workspace
+    - name: Download Workspace
+      uses: actions/download-artifact@v4
+      with:
+        name: workspace
 
-      - name: Terraform Format Check
-        run: terraform fmt -check
+    - name: Setup Terraform  # Ensure Terraform is installed
+      uses: hashicorp/setup-terraform@v2
+      with:
+        terraform_version: latest
+
+    - name: Terraform Format Check
+      run: terraform fmt -check
+
 
   validate:
     name: Terraform Validate
