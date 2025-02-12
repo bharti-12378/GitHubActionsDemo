@@ -81,7 +81,8 @@ jobs:
         with:
           terraform_version: latest
 
-
+      - name: Initialize Terraform  
+        run: terraform init
       - name: Terraform Validate
         run: terraform validate
 
