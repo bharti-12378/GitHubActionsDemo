@@ -39,7 +39,7 @@ jobs:
             terraform-${{ github.ref }}-
 
       - name: Initialize Terraform
-        run: terraform init
+        run: terraform init -upgrade  # Ensures latest providers are fetched
 
       - name: Save Workspace as Artifact
         uses: actions/upload-artifact@v4
@@ -57,7 +57,7 @@ jobs:
         with:
           name: workspace
 
-      - name: Setup Terraform  # Ensure Terraform is installed
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
@@ -75,13 +75,13 @@ jobs:
         with:
           name: workspace
 
-      - name: Setup Terraform  # Ensure Terraform is installed
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
 
       - name: Initialize Terraform  
-        run: terraform init  # This ensures providers are installed before validation
+        run: terraform init -upgrade  # Ensures latest providers are fetched
 
       - name: Terraform Validate
         run: terraform validate
@@ -96,13 +96,13 @@ jobs:
         with:
           name: workspace
 
-      - name: Setup Terraform  # Ensure Terraform is installed
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
 
-      - name: Initialize Terraform  # This step was missing before, fixing your issue!
-        run: terraform init
+      - name: Initialize Terraform  # Ensures the same provider versions are installed
+        run: terraform init -upgrade  
 
       - name: Terraform Plan
         run: terraform plan -out=tfplan
@@ -117,20 +117,20 @@ jobs:
     name: Terraform Apply (Manual)
     runs-on: ubuntu-latest
     needs: plan
-    environment: production
+    environment: development 
     steps:
       - name: Download Terraform Plan
         uses: actions/download-artifact@v4
         with:
           name: terraform-plan
 
-      - name: Setup Terraform  # Ensure Terraform is installed
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: latest
 
-      - name: Initialize Terraform  # Ensures Terraform is correctly set up before apply
-        run: terraform init
+      - name: Initialize Terraform  # Ensures the same provider versions are installed
+        run: terraform init -upgrade  
 
       - name: Apply Terraform Plan
         run: terraform apply -auto-approve tfplan
